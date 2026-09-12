@@ -1,0 +1,130 @@
+* { box-sizing: border-box; }
+
+html { min-height: 100%; }
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    color: #263238;
+    background: #f6f8f7;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+}
+
+main { flex: 1; }
+a { color: #146c5a; }
+.container { width: 90%; max-width: 1100px; margin: 0 auto; }
+.site-header { background: #ffffff; border-bottom: 1px solid #dfe6e3; }
+
+.header-content {
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.brand { color: #12372f; font-size: 1.35rem; font-weight: bold; text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 22px; }
+nav a { color: #455a54; font-size: 0.95rem; font-weight: bold; text-decoration: none; }
+nav a:hover { color: #146c5a; }
+.hero { padding: 96px 0; color: #ffffff; background: #12372f; }
+
+.hero h1, .page-banner h1 {
+    max-width: 760px;
+    margin: 4px 0 18px;
+    font-size: 3rem;
+    line-height: 1.15;
+}
+
+.hero-text, .page-banner p { max-width: 680px; font-size: 1.08rem; }
+
+.eyebrow {
+    margin: 0;
+    color: #dcae52;
+    font-size: 0.78rem;
+    font-weight: bold;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.actions { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+.button {
+    padding: 12px 20px;
+    color: #12372f;
+    background: #f2c66d;
+    border: 1px solid #f2c66d;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.button-light { color: #ffffff; background: transparent; border-color: #ffffff; }
+.overview, .content-section { padding-top: 64px; padding-bottom: 72px; }
+.section-heading { margin-bottom: 28px; }
+.section-heading h2, .about-grid h2 { margin: 4px 0 12px; color: #12372f; font-size: 1.8rem; }
+.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+
+.card, .flow-box, .table-card {
+    background: #ffffff;
+    border: 1px solid #dfe6e3;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(18, 55, 47, 0.06);
+}
+
+.card { padding: 28px; }
+.card-number { color: #b27c18; font-size: 0.8rem; font-weight: bold; }
+.card h3 { margin: 10px 0 8px; color: #12372f; }
+.card a { font-weight: bold; text-decoration: none; }
+.page-banner { padding: 55px 0; color: #ffffff; background: #12372f; }
+.page-banner h1 { font-size: 2.5rem; }
+.page-banner p:last-child { margin-bottom: 0; }
+.about-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 40px; align-items: start; }
+.flow-box { padding: 28px; border-top: 4px solid #dcae52; }
+.flow-box ol { margin-bottom: 0; padding-left: 22px; }
+.flow-box li { margin-bottom: 12px; }
+.table-card { overflow: hidden; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 18px 22px; text-align: left; }
+
+th {
+    color: #ffffff;
+    background: #1d574a;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+td { border-bottom: 1px solid #e6ece9; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: #f1f7f4; }
+
+.role-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    color: #146c5a;
+    background: #e3f2ed;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.site-footer { padding: 22px 0; color: #dbe5e2; background: #0b2822; text-align: center; }
+.site-footer p { margin: 0; font-size: 0.9rem; }
+
+@media (max-width: 760px) {
+    .header-content { padding: 16px 0; flex-direction: column; align-items: flex-start; }
+    nav { gap: 14px; }
+    .hero { padding: 68px 0; }
+    .hero h1, .page-banner h1 { font-size: 2.15rem; }
+    .card-grid, .about-grid { grid-template-columns: 1fr; }
+    table, thead, tbody, th, td, tr { display: block; }
+    thead { display: none; }
+    tr { padding: 12px 18px; border-bottom: 1px solid #dfe6e3; }
+    tbody tr:last-child { border-bottom: 0; }
+    td { padding: 7px 0; border: 0; }
+    td::before { content: attr(data-label) ": "; color: #12372f; font-weight: bold; }
+}
