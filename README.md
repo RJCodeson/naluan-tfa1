@@ -1,65 +1,186 @@
-# SimplePOS
+# SimplePOS Database Application
 
-SimplePOS is a four-page CodeIgniter 4 website created for IT0049 Technical Formative Assessment 1. It demonstrates routes, controllers, views, basic data passing, and `foreach` loops using static PHP arrays. No database is used in this version of the project.
+SimplePOS is a CodeIgniter 4 project developed for the IT0049 Web System Technologies Technical Formative Assessment 2. It extends the original TFA1 application by replacing temporary PHP-array data with records stored in a MySQL database.
 
-## Required pages
+The project demonstrates CodeIgniter database configuration, models, Query Builder retrieval through `findAll()`, controllers, views, routing, and safe output using `esc()`.
 
-- `/` - landing page
-- `/about` - project information and basic MVC flow
-- `/customers` - five customer records from a static PHP array
-- `/users` - five user/staff records from a static PHP array
+## Features
 
-## Requirements
+- Home and About pages
+- Customer Accounts page
+- User Accounts page
+- MySQL storage for customer and user records
+- CodeIgniter models for database access
+- Responsive table styling
+- Escaped database output for safer display
+
+## Technology used
 
 - PHP 8.2 or newer
-- PHP `intl` extension enabled
-- Composer
-- XAMPP, or CodeIgniter's local development server
+- CodeIgniter 4.7
+- MySQL or MariaDB
+- XAMPP and phpMyAdmin
+- HTML and CSS
 
-## Setup with XAMPP
+## Initial database plan
 
-1. Place the project folder inside `C:\xampp\htdocs`.
-2. Open a terminal in the project folder.
-3. Run `composer install`.
-4. Copy the `env` file and rename the copy to `.env` if `.env` is not present.
-5. In `.env`, set:
+The database is named `naluan_tfa2` and contains two tables.
 
-   ```ini
-   CI_ENVIRONMENT = development
-   app.baseURL = 'http://localhost/naluan-tfa1/public/'
-   app.indexPage = ''
-   ```
+### `customers`
 
-6. Start Apache from the XAMPP Control Panel.
-7. Visit `http://localhost/naluan-tfa1/public/`.
+The `customers` table stores customer contact information.
 
-If the project folder has a different name, update `app.baseURL` to match it.
-If `intl` was just enabled in `php.ini`, stop and start Apache once so it loads the change.
+| Field | Type | Description |
+| --- | --- | --- |
+| `id` | `INT` | Auto-incrementing primary key |
+| `full_name` | `VARCHAR(100)` | Customer's complete name |
+| `email` | `VARCHAR(100)` | Customer's email address |
+| `phone` | `VARCHAR(20)` | Customer's phone number |
+| `created_at` | `DATETIME` | Date and time the record was created |
 
-## Alternative: CodeIgniter development server
+Sample records:
 
-1. Run `composer install`.
-2. Change `app.baseURL` in `.env` to `http://localhost:8080/`.
-3. Run `php spark serve`.
-4. Visit `http://localhost:8080/`.
+| Full name | Email | Phone |
+| --- | --- | --- |
+| Angela Cruz | angela.cruz@example.com | 0917 123 4567 |
+| Marco Santos | marco.santos@example.com | 0918 234 5678 |
+| Beatrice Reyes | beatrice.reyes@example.com | 0919 345 6789 |
+| Joshua Garcia | joshua.garcia@example.com | 0920 456 7890 |
+| Nicole Mendoza | nicole.mendoza@example.com | 0921 567 8901 |
+
+### `users`
+
+The `users` table stores the accounts of staff members who use the POS system.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `id` | `INT` | Auto-incrementing primary key |
+| `username` | `VARCHAR(50)` | Unique account username |
+| `full_name` | `VARCHAR(100)` | User's complete name |
+| `created_at` | `DATETIME` | Date and time the account was created |
+
+Sample records:
+
+| Username | Full name |
+| --- | --- |
+| `admin01` | Paolo Dela Cruz |
+| `manager01` | Sofia Ramos |
+| `cashier01` | Miguel Torres |
+| `cashier02` | Andrea Flores |
+| `staff01` | Daniel Lim |
+
+## Local setup
+
+### 1. Install the project dependencies
+
+Open a terminal in the project directory and run:
+
+```powershell
+composer install
+```
+
+### 2. Create the environment file
+
+Copy the provided `env` template to `.env`:
+
+```powershell
+Copy-Item env .env
+```
+
+Configure the application and database settings in `.env`:
+
+```ini
+CI_ENVIRONMENT = development
+
+app.baseURL = 'http://localhost:8080/'
+app.indexPage = ''
+
+database.default.hostname = localhost
+database.default.database = naluan_tfa2
+database.default.username = root
+database.default.password =
+database.default.DBDriver = MySQLi
+database.default.DBPrefix =
+database.default.port = 3306
+```
+
+The blank database password matches the default XAMPP MySQL configuration. Change it if the local MySQL account uses a password. Do not commit `.env` because it contains machine-specific configuration.
+
+### 3. Create and populate the database
+
+Start Apache and MySQL from XAMPP, open `http://localhost/phpmyadmin`, and run:
+
+```sql
+CREATE DATABASE IF NOT EXISTS naluan_tfa2;
+USE naluan_tfa2;
+
+CREATE TABLE customers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    phone VARCHAR(20),
+    created_at DATETIME NOT NULL
+);
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    full_name VARCHAR(100) NOT NULL,
+    created_at DATETIME NOT NULL
+);
+
+INSERT INTO customers (full_name, email, phone, created_at) VALUES
+('Angela Cruz', 'angela.cruz@example.com', '0917 123 4567', NOW()),
+('Marco Santos', 'marco.santos@example.com', '0918 234 5678', NOW()),
+('Beatrice Reyes', 'beatrice.reyes@example.com', '0919 345 6789', NOW()),
+('Joshua Garcia', 'joshua.garcia@example.com', '0920 456 7890', NOW()),
+('Nicole Mendoza', 'nicole.mendoza@example.com', '0921 567 8901', NOW());
+
+INSERT INTO users (username, full_name, created_at) VALUES
+('admin01', 'Paolo Dela Cruz', NOW()),
+('manager01', 'Sofia Ramos', NOW()),
+('cashier01', 'Miguel Torres', NOW()),
+('cashier02', 'Andrea Flores', NOW()),
+('staff01', 'Daniel Lim', NOW());
+```
+
+Run the insert statements only once because each username must be unique.
+
+### 4. Run the application
+
+Start the CodeIgniter development server:
+
+```powershell
+php spark serve
+```
+
+Open `http://localhost:8080/` in a browser.
+
+## Application routes
+
+| Route | Page |
+| --- | --- |
+| `/` | Home |
+| `/about` | About |
+| `/customers` | Customer Accounts |
+| `/users` | User Accounts |
+
+Database changes become visible after refreshing the corresponding account page.
 
 ## Project structure
 
-- `app/Config/Routes.php` contains the four routes.
-- `app/Controllers/Pages.php` handles the landing and about pages.
-- `app/Controllers/Customers.php` contains and passes the customer array.
-- `app/Controllers/Users.php` contains and passes the user array.
-- `app/Views` contains the HTML/PHP views and shared header/footer.
-- `public/css/style.css` contains the website styles.
+- `app/Config/Routes.php` defines the application routes.
+- `app/Controllers` contains the page, customer, and user controllers.
+- `app/Models/CustomerModel.php` maps to the `customers` table.
+- `app/Models/UserModel.php` maps to the `users` table.
+- `app/Views` contains the pages and shared templates.
+- `public/css/style.css` contains the site styling.
 
-## Testing
+## Security note
 
-Run the tests made for the four required pages:
+The application displays database values with CodeIgniter's `esc()` helper. Local credentials remain in `.env`, which is excluded from Git.
 
-```text
-vendor\bin\phpunit tests\feature\PagesTest.php
-```
+## Course information
 
-## Database note
-
-The assessment instructions specify that no database is involved yet, so this project has no database export. The Customer Accounts and User Accounts pages use static PHP arrays as their temporary data sources, ready to be replaced by database results in the next module.
+- Course: IT0049 – Web System Technologies
+- Activity: Technical Formative Assessment 2 – From Arrays to a Real Database
